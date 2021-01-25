@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import Api from './api';
+
 export default {
   data: function(){
     return {
@@ -14,9 +16,8 @@ export default {
     }
   },
   created: async function(){
-    const gResponse = await fetch("http://localhost:5000/vue-test");
-    const gObject = await gResponse.json();
-    this.flaskGreeting = gObject.greeting;
+    const data = await Api.getWelcomeMessage();
+    this.flaskGreeting = data.greeting;
   }
 }
 
