@@ -1,5 +1,5 @@
-import Axios from 'axios';
-import { ApiURL } from "./resources.js";
+import Axios, {AxiosResponse} from 'axios';
+import { ApiURL } from "./resources";
 
 //api handler that is used by the components to do api calls.
 
@@ -9,21 +9,21 @@ const api = Axios.create({
 })
 
 //method that check validity of 
-const handleApiResponse = ((res) => {
+export const handleApiResponse = ((res: AxiosResponse) => {
     //unpack api result
     //if confusing: google ES6 destructuring assignment
-    const { 
+    const {
             status: status ,
-            data: data , 
-            config: { method, url } 
+            data: data ,
+            config: { method, url }
     } = res;
 
-    
+
     if (process.env.NODE_ENV === "development") {
         console.log(`${method} ${url}`)
         console.log(res)
     }
-    
+
     //return data from call
     if (status === 200 && data)
         return data;
@@ -33,11 +33,12 @@ const handleApiResponse = ((res) => {
                     \nData: ${data}`);
 })
 
-//the methods that wrap the api calls 
-export default {
-    getWelcomeMessage() {
+//the methods that wrap the api calls
+export default class APIWrapper {
+
+    public static getWelcomeMessage(): any {
         return api.get('/vue-test')
         .then(handleApiResponse)
-        .catch(e => console.log(e))
+        .catch(e => console.log(e));
     }
 }

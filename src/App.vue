@@ -1,18 +1,25 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div id="app">
+    <p>{{dict.greeting}}</p>
+    <p>{{dict.flaskGreeting}}</p>
+  </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from './components/HelloWorld.vue';
+import { Vue } from 'vue-class-component';
+import APIWrapper from "./api";
 
-@Options({
-  components: {
-    HelloWorld,
-  },
-})
-export default class App extends Vue {}
+export default class API extends Vue {
+  private dict = {
+    greeting: 'Hello, vue!',
+    flaskGreeting: ''
+  }
+
+  async data() {
+    const data = await APIWrapper.getWelcomeMessage();
+    this.dict.flaskGreeting = data.greeting;
+  }
+}
 </script>
 
 <style>
