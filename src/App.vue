@@ -3,6 +3,8 @@
     <p>{{ greeting }}</p>
     <p>{{ flaskGreeting }}</p>
     <p>{{ counter }}</p>
+    <Button label="Count" @click="count(1)"/>
+    <Button label="Count down" @click="count(-1)"/>
   </div>
 </template>
 
@@ -16,6 +18,9 @@ export default class API extends Vue {
   counter = 0;
 
 
+  count(howMuch: number) {
+    this.counter += howMuch;
+  }
 
   async data() {
     const data = await APIWrapper.getWelcomeMessage();
