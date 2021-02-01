@@ -1,26 +1,25 @@
 <template>
   <div id="app">
-    <p>{{ greeting }}</p>
-    <p>{{ flaskGreeting }}</p>
+    <p>{{dict.greeting}}</p>
+    <p>{{dict.flaskGreeting}}</p>
   </div>
 </template>
 
-<script>
-import Api from './api';
+<script lang="ts">
+import { Vue } from 'vue-class-component';
+import APIWrapper from "./api";
 
-export default {
-  data: function(){
-    return {
-      greeting: 'Hello, Vue!',
-      flaskGreeting: ''
-    }
-  },
-  created: async function(){
-    const data = await Api.getWelcomeMessage();
-    this.flaskGreeting = data.greeting;
+export default class API extends Vue {
+  private dict = {
+    greeting: 'Hello, vue!',
+    flaskGreeting: ''
+  }
+
+  async data() {
+    const data = await APIWrapper.getWelcomeMessage();
+    this.dict.flaskGreeting = data.greeting;
   }
 }
-
 </script>
 
 <style>
