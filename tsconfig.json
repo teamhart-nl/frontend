@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    // This aligns with Vue's browser support
+    "target": "es5",
+    // This enables stricter inference for data properties on 'this'
+    "strict": true,
+    // If using webpack 2_ or rollup, to leverage tree shaking:
+    "module": "es2015",
+    "moduleResolution": "node",
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
