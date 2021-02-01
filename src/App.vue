@@ -1,23 +1,30 @@
 <template>
   <div id="app">
-    <p>{{dict.greeting}}</p>
-    <p>{{dict.flaskGreeting}}</p>
+    <p>{{ greeting }}</p>
+    <p>{{ flaskGreeting }}</p>
+    <p>{{ counter }}</p>
+    <Button label="Count" @click="count(1)"/>
+    <Button label="Count down" @click="count(-1)"/>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import {Vue} from 'vue-class-component';
 import APIWrapper from "./api";
 
 export default class API extends Vue {
-  private dict = {
-    greeting: 'Hello, vue!',
-    flaskGreeting: ''
+  greeting = 'Hello, vue!';
+  flaskGreeting = '';
+  counter = 0;
+
+
+  count(howMuch: number) {
+    this.counter += howMuch;
   }
 
   async data() {
     const data = await APIWrapper.getWelcomeMessage();
-    this.dict.flaskGreeting = data.greeting;
+    this.flaskGreeting = data.greeting;
   }
 }
 </script>
