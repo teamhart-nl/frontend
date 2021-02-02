@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <NavBar></NavBar>
     <p>{{ greeting }}</p>
     <p>{{ flaskGreeting }}</p>
     <p>{{ counter }}</p>
@@ -12,9 +13,11 @@
 <script lang="ts">
 import APIWrapper from "./api";
 import { defineComponent, ref } from 'vue';
+import NavBar from "@/components/NavBar.vue";
 
 export default defineComponent({
   name: 'App',
+  components: {NavBar},
   setup() {
     const greeting = 'Welcome, VUE!';
     const flaskGreeting = '';
@@ -45,6 +48,5 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
