@@ -1,41 +1,43 @@
 <template>
   <div id="app">
-    <p>{{ greeting }}</p>
-    <p>{{ flaskGreeting }}</p>
-    <p>{{ counter }}</p>
-    <Button label="Count" @click="count(1)"/>
-    <Button label="Count down" @click="count(-1)"/>
+    <Navbar></Navbar>
+    <div id="content" class="p-shadow-1">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {Vue} from 'vue-class-component';
 import APIWrapper from "./api";
+import {defineComponent, ref} from 'vue';
+import Navbar from "@/components/Navbar.vue";
 
-export default class API extends Vue {
-  greeting = 'Hello, vue!';
-  flaskGreeting = '';
-  counter = 0;
+export default defineComponent({
+  name: 'App',
+  components: {Navbar},
+  setup() {
+    const greeting = 'Welcome, VUE!';
+    const flaskGreeting = '';
+    let counter = ref(0);
 
+    const count = (howMuch: number) => {
+      counter.value += howMuch;
+    }
 
-  count(howMuch: number) {
-    this.counter += howMuch;
-  }
-
+    return {
+      greeting,
+      flaskGreeting,
+      counter,
+      count
+    }
+  },
   async data() {
     const data = await APIWrapper.getWelcomeMessage();
     this.flaskGreeting = data.greeting;
   }
-}
+});
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+
 </style>
