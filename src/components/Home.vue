@@ -1,5 +1,9 @@
 <template>
-  <p>{{home_message}}</p>
+  <div style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;">
+    <div style="width:400px;height:400px;">
+      <img src="./../assets/HART-logo.png" height="400">
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
