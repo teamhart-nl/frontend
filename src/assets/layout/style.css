@@ -1,5 +1,17 @@
+#app {
+    margin: 10px;
+}
+
+#content {
+    width: 100%;
+    background: #ffffff;
+    margin-top: 10px;
+    height: 80vh;
+    padding: 10px;
+}
+
 .p-component {
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
 
 .pi {

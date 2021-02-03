@@ -40,16 +40,4 @@ export default defineComponent({
 
 <style scoped>
 
-#app {
-  margin: 10px;
-}
-
-#content {
-  width: 100%;
-  background: #ffffff;
-  margin-top: 10px;
-  height: 80vh;
-  padding: 10px;
-}
-
 </style>
