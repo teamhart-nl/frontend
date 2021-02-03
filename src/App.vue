@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar></Navbar>
-    <div id="content">
+    <div id="content" class="p-shadow-1">
       <router-view/>
     </div>
   </div>
@@ -38,26 +38,18 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  background-color: whitesmoke;
-  height: 98vh;
+  margin: 10px;
 }
 
 #content {
-  border: gainsboro 2px solid;
-  border-radius: 10px;
-  box-shadow: 2px 2px 2px ghostwhite;
-  width: min(60%, 900px);
+  width: 100%;
+  background: #ffffff;
+  margin-top: 10px;
   height: 80vh;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 40px;
-  overflow: scroll;
+  padding: 10px;
 }
+
 </style>

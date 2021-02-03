@@ -7,6 +7,9 @@ import Button from "primevue/button";
 import 'primevue/resources/themes/md-light-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+import './assets/layout/reset.css';
+import './assets/layout/style.css';
+import 'primeflex/primeflex.css';
 
 import TabMenu from "primevue/tabmenu";
 import {router} from "@/router/router";
