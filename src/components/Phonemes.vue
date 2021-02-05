@@ -7,8 +7,7 @@
 
   <Dropdown v-model="dropdownPhoneme" :options="phonemes" optionLabel="name" placeholder="Phoneme" :filter="true"/>
   <Button @click="sendDropdownPhoneme()">Send phoneme!</Button>
-<!--  <input type="checkbox" id="checkbox" v-model="checked">-->
-<!--  <label for="checkbox">{{ checked }}</label>-->
+
 </template>
 
 <script>
@@ -25,8 +24,12 @@ export default defineComponent({
     const dropdownPhoneme = ref();
 
     function sendDropdownPhoneme() {
-      const json = {'phonemes': [dropdownPhoneme.value.name]}
-      APIWrapper.sendPhonemeMicrocontroller(json);
+      if (dropdownPhoneme.value !== undefined) {
+        const json = {'phonemes': [dropdownPhoneme.value.name]}
+        APIWrapper.sendPhonemeMicrocontroller(json);
+      } else {
+        alert("Please select a phoneme to send")
+      }
     }
 
     // eslint-disable-next-line no-unused-labels
@@ -46,12 +49,6 @@ export default defineComponent({
 })
 </script>
 
-<style>
-.p-dropdown .p-inputtext {
-  font-size: 2rem;
-}
+<style scoped>
 
-.p-component {
-  font-size: 2rem;
-}
 </style>
