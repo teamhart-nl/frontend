@@ -1,5 +1,5 @@
 <template>
-  <H1>Words!</H1>
+  <h1>Words!</h1>
 </template>
 
 <script>

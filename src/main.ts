@@ -13,6 +13,8 @@ import 'primeflex/primeflex.css';
 
 import TabMenu from "primevue/tabmenu";
 import {router} from "@/router/router";
+import Checkbox from "primevue/checkbox";
+import Dropdown from "primevue/dropdown";
 
 const app = createApp(App)
 
@@ -21,5 +23,7 @@ app.use(router);
 
 app.component('Button', Button);
 app.component('TabMenu', TabMenu);
+app.component('Checkbox', Checkbox);
+app.component('Dropdown', Dropdown);
 
 app.mount('#app')
