@@ -1,3 +1,8 @@
+:root {
+    --header-size: 2rem;
+    --text-size: 1.7rem;
+}
+
 #app {
     margin: 10px;
 }
@@ -16,4 +21,24 @@
 
 .p-tabmenu .pi {
     font-size: 1.8rem;
+}
+
+.p-panel .p-panel-header .p-panel-title {
+    font-size: var(--header-size);
+}
+
+.p-placeholder {
+    font-size: var(--text-size);
+}
+
+.p-component {
+    font-size: var(--text-size);
+}
+
+.p-inputtext {
+    font-size: var(--text-size);
+}
+
+p {
+    font-size: var(--text-size);
 }
