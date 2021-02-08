@@ -93,7 +93,7 @@ export default defineComponent({
 
       // get a set of random phonemes from the selected phonemes
       const randomPhonemes = getRandom(selectedTrainPhonemes.value as any, Math.min(3, selectedTrainPhonemes.value.length));
-      // const playedPhoneme = getRandom(randomPhonemes, 1) // is a list
+      const playedPhoneme: string = getRandom(randomPhonemes, 1)[0];
 
       // APIWrapper.sendPhonemeMicrocontroller({'phonemes': playedPhoneme});
 
@@ -108,7 +108,17 @@ export default defineComponent({
         div.style.marginRight = "10px";
 
         buttonDiv.appendChild(div);
-        createApp(Button, {label: phoneme}).mount(div);
+        createApp(Button, {label: phoneme, id: phoneme}).mount(div);
+
+        const btn = document.getElementById(phoneme);
+        if (btn === null) {alert("NOPE"); return}
+        btn.addEventListener("click", function () {
+          if (phoneme === playedPhoneme) {
+            alert("HOZEEE");
+          } else {
+            alert("NOPE");
+          }
+        });
 
       })
     }
