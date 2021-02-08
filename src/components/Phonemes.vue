@@ -108,16 +108,20 @@ export default defineComponent({
         div.style.marginRight = "10px";
 
         buttonDiv.appendChild(div);
-        createApp(Button, {label: phoneme, id: phoneme}).mount(div);
+        createApp(Button, {label: phoneme, id: "fid_" + phoneme}).mount(div);
 
-        const btn = document.getElementById(phoneme);
+        const btn = document.getElementById("fid_" + phoneme);
         if (btn === null) {alert("NOPE"); return}
         btn.addEventListener("click", function () {
+          const bgColor = btn.style.background;
           if (phoneme === playedPhoneme) {
-            alert("HOZEEE");
+            btn.style.background = "green";
           } else {
-            alert("NOPE");
+            btn.style.background = "red";
           }
+          setTimeout(() => {
+            btn.style.background = bgColor
+          }, 1000);
         });
 
       })
