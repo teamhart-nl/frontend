@@ -11,7 +11,7 @@
     width: 100%;
     background: #ffffff;
     margin-top: 10px;
-    height: 80vh;
+    min-height: 80vh;
     padding: 30px;
 }
 

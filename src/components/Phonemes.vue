@@ -16,7 +16,7 @@
 
     </div>
     <br>
-    <Panel header="Send random">
+    <Panel header="Send random" style="margin-bottom: 10px">
     <Button @click="sendRandomPhoneme()" style="padding: 1.2rem">Send random phoneme!</Button>
     </Panel>
     <Panel header="Forced identification">
@@ -32,7 +32,7 @@ import {createApp, defineComponent, ref} from "vue";
 import APIWrapper from "@/backend.api";
 import Button from "primevue/button";
 
-function getRandom(arr, n): any {
+function getRandom(arr: [any], n: number): any {
   let result = new Array(n),
       len = arr.length,
       taken = new Array(len);
@@ -48,9 +48,9 @@ function getRandom(arr, n): any {
 
 export default defineComponent({
   name: 'Phonemes',
-  extends: Button,
+  extends: {Button},
 
-  async setup() {
+  setup: async () => {
 
     const phonemeData = (await APIWrapper.getPhonemes()).phonemes;
     const selectedTrainPhonemes = ref([]);
@@ -77,14 +77,22 @@ export default defineComponent({
 
     function sendForcedIdentification() {
       const buttonDiv = document.getElementById("forcedIdentificationButtons")
+      if (buttonDiv === null) {
+        alert("No div for placing buttons, something went wrong!");
+        return;
+      }
+
+      // reset div
       buttonDiv.innerHTML = '';
 
+      // check if some phonemes are selected
       if (selectedTrainPhonemes.value.length === 0) {
         alert("Please select phonemes to train on");
         return
       }
 
-      const randomPhonemes = getRandom(selectedTrainPhonemes.value, Math.min(3, selectedTrainPhonemes.value.length));
+      // get a set of random phonemes from the selected phonemes
+      const randomPhonemes = getRandom(selectedTrainPhonemes.value as any, Math.min(3, selectedTrainPhonemes.value.length));
       // const playedPhoneme = getRandom(randomPhonemes, 1) // is a list
 
       // APIWrapper.sendPhonemeMicrocontroller({'phonemes': playedPhoneme});
@@ -94,9 +102,10 @@ export default defineComponent({
       textDiv.innerHTML = '<p>Which phoneme was just played?</p>';
       buttonDiv.appendChild(textDiv);
 
-      randomPhonemes.forEach((phoneme) => {
+      randomPhonemes.forEach((phoneme: string) => {
         const div = document.createElement('div');
-        div.style = "display: inline-block; margin-right: 10px";
+        div.style.display = "inline-block";
+        div.style.marginRight = "10px";
 
         buttonDiv.appendChild(div);
         createApp(Button, {label: phoneme}).mount(div);
@@ -105,8 +114,8 @@ export default defineComponent({
     }
 
     // eslint-disable-next-line no-unused-labels
-    const phonemes = []
-    phonemeData.forEach((pho) => {
+    const phonemes: {name: string}[] = [];
+    phonemeData.forEach((pho: string) => {
       phonemes.push({name: pho})
     })
 
