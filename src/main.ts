@@ -17,10 +17,11 @@ import Checkbox from "primevue/checkbox";
 import Dropdown from "primevue/dropdown";
 import Panel from "primevue/panel";
 import Fieldset from "primevue/fieldset";
+import InputText from 'primevue/inputtext';
+import AutoComplete from "primevue/autocomplete";
 
 import './assets/layout/reset.css';
 import './assets/layout/style.css';
-import AutoComplete from "primevue/autocomplete";
 
 const app = createApp(App)
 
@@ -34,5 +35,6 @@ app.component('Dropdown', Dropdown);
 app.component('Panel', Panel);
 app.component('Fieldset', Fieldset);
 app.component('AutoComplete', AutoComplete);
+app.component('InputText', InputText);
 
 app.mount('#app')

@@ -5,9 +5,16 @@
   <Panel header="Send a chosen word">
     <p>To just try out how a single word feels, type it and send it to the arduino! If the word is in the 'standard
       words database' then you can find it using autocomplete.</p>
-    <AutoComplete v-model="selectedWord" :dropdown="true" :suggestions="filteredWords.value" @complete="searchWord($event)"
+    <AutoComplete v-model="selectedWord" :dropdown="true" :suggestions="filteredWords.value"
+                  @complete="searchWord($event)"
                   field="name" style="margin-right: 10px"/>
     <Button @click="sendACWord()" style="padding: 1.1rem">Send word!</Button>
+    <Button @click="addWord()" style="padding: 1.1rem; margin-left: 10px; margin-right: 10px">Add word to list!</Button>
+    <Button @click="removeWord()" style="padding: 1.1rem">Remove word from list!</Button>
+  </Panel>
+  <Panel header="Selection based training">
+    <AutoComplete :multiple="true" v-model="selectedWords" :suggestions="filteredWords.value"
+                  @complete="searchWord($event)" field="name" style="width: 100%"/>
   </Panel>
 </template>
 
@@ -19,7 +26,9 @@ export default defineComponent({
 
   setup: async () => {
     const selectedWord = ref();
-    const words = [
+    const selectedWords = ref([]);
+    const inputWord = ref();
+    const words = ref([
       {name: "meat"},
       {name: "hurt"},
       {name: "see"},
@@ -42,17 +51,16 @@ export default defineComponent({
       {name: "saw"},
       {name: "straw"},
       {name: "heart"}, // HART
-    ]
-    let filteredWords = ref(words)
+    ]);
+    let filteredWords = ref(words.value)
 
     function searchWord(event) {
-      filteredWords.value = ref(words.map((w) => {
+      filteredWords.value = ref(words.value.map((w) => {
         return w.name.includes(event.query) ? w : null
       }).filter(w => !!w));
     }
 
     function sendACWord() {
-      console.log(selectedWord.value);
       if (typeof selectedWord.value !== "string") {
         alert("word from list");
       } else {
@@ -60,13 +68,42 @@ export default defineComponent({
       }
     }
 
+    function addWord() {
+      if (selectedWord.value === undefined) {
+        alert("Please type a word first before inserting!");
+      } else {
+        alert("'" + selectedWord.value + "' was added to the list");
+        words.value.push({name: selectedWord.value});
+        selectedWord.value = "";
+      }
+    }
+
+    function removeWord() {
+      if (selectedWord.value === undefined) {
+        alert("Please type a word first before removing!");
+      } else {
+        const index = words.value.findIndex(o => {return (o.name === selectedWord.value.name) || o.name === selectedWord.value});
+        if (index === -1) {
+          alert("Word not found in list, thus cannot be removed.");
+        } else {
+          alert("'" + words.value[index].name + "' was removed from the list");
+          words.value.splice(index, 1);
+          selectedWord.value = "";
+        }
+      }
+    }
+
     return {
       selectedWord,
+      selectedWords,
+      inputWord,
       filteredWords,
       words,
 
       searchWord,
-      sendACWord
+      sendACWord,
+      addWord,
+      removeWord,
     }
   }
 })

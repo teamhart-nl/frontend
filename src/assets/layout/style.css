@@ -27,6 +27,14 @@
     font-size: var(--header-size);
 }
 
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+    font-size: var(--text-size);
+}
+
+.p-autocomplete .p-autocomplete-multiple-container {
+    width: 100%;
+}
+
 .p-placeholder {
     font-size: var(--text-size);
 }
