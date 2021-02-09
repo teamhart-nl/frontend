@@ -2,15 +2,15 @@
   <h1>Words!</h1>
 
   <!-- Panel for sending a specific word -->
-  <Panel header="Send a chosen word">
-    <p>To just try out how a single word feels, type it and send it to the arduino! If the word is in the 'standard
-      words database' then you can find it using autocomplete.</p>
+  <Panel header="Configure list of words, and send specific word">
+    <p>In this panel you can configure the list by adding (or removing) word to (from) the preprogrammed list of words.
+      Additionally, you can send any word you want to the microcontroller.</p>
     <AutoComplete v-model="selectedWord" :dropdown="true" :suggestions="filteredWords.value"
                   @complete="searchWord($event)"
                   field="name" style="margin-right: 10px"/>
+    <Button @click="addWord()" style="padding: 1.1rem; margin-right: 10px">Add word to list!</Button>
+    <Button @click="removeWord()" style="padding: 1.1rem; margin-right: 10px">Remove word from list!</Button>
     <Button @click="sendACWord()" style="padding: 1.1rem">Send word!</Button>
-    <Button @click="addWord()" style="padding: 1.1rem; margin-left: 10px; margin-right: 10px">Add word to list!</Button>
-    <Button @click="removeWord()" style="padding: 1.1rem">Remove word from list!</Button>
   </Panel>
   <Panel header="Selection based training">
     <AutoComplete :multiple="true" v-model="selectedWords" :suggestions="filteredWords.value"
@@ -54,12 +54,19 @@ export default defineComponent({
     ]);
     let filteredWords = ref(words.value)
 
+    /**
+     * Function that filters the words list for all autocomplete input fields.
+     * @param event   The event emitted from the input field upon updating.
+     */
     function searchWord(event) {
       filteredWords.value = ref(words.value.map((w) => {
         return w.name.includes(event.query) ? w : null
       }).filter(w => !!w));
     }
 
+    /**
+     * Function for sending a word to the arduino.
+     */
     function sendACWord() {
       if (typeof selectedWord.value !== "string") {
         alert("word from list");
@@ -68,6 +75,9 @@ export default defineComponent({
       }
     }
 
+    /**
+     * Function for adding a word to the list of words.
+     */
     function addWord() {
       if (selectedWord.value === undefined) {
         alert("Please type a word first before inserting!");
@@ -78,11 +88,16 @@ export default defineComponent({
       }
     }
 
+    /**
+     * Function for removing a word from the list of words.
+     */
     function removeWord() {
       if (selectedWord.value === undefined) {
         alert("Please type a word first before removing!");
       } else {
-        const index = words.value.findIndex(o => {return (o.name === selectedWord.value.name) || o.name === selectedWord.value});
+        const index = words.value.findIndex(o => {
+          return (o.name === selectedWord.value.name) || o.name === selectedWord.value
+        });
         if (index === -1) {
           alert("Word not found in list, thus cannot be removed.");
         } else {
