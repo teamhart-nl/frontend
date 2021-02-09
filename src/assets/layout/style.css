@@ -42,3 +42,14 @@
 p {
     font-size: var(--text-size);
 }
+
+#phoneme-table,
+#phoneme-table th,
+#phoneme-table td {
+    border: 1px solid black;
+}
+
+#phoneme-table th,
+#phoneme-table td {
+    padding: 10px;
+}

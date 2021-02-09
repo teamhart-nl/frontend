@@ -16,6 +16,7 @@ import {router} from "@/router/router";
 import Checkbox from "primevue/checkbox";
 import Dropdown from "primevue/dropdown";
 import Panel from "primevue/panel";
+import Fieldset from "primevue/fieldset";
 
 import './assets/layout/reset.css';
 import './assets/layout/style.css';
@@ -30,5 +31,6 @@ app.component('TabMenu', TabMenu);
 app.component('Checkbox', Checkbox);
 app.component('Dropdown', Dropdown);
 app.component('Panel', Panel);
+app.component('Fieldset', Fieldset);
 
 app.mount('#app')

@@ -23,6 +23,15 @@
       <p>By clicking the button, a phoneme will be send to the arduino, and you will get to see three buttons, and have to choose which one you felt.</p>
       <Button @click="sendForcedIdentification()" style="padding: 1.2rem">Forced identification!</Button>
       <div id="forcedIdentificationButtons"></div>
+      <Fieldset legend="Answers (history)" :toggleable="true" :collapsed="true">
+        <table id="phoneme-table">
+          <tr>
+            <th>Round</th>
+            <th>Correct answer</th>
+            <th>Guessed answers</th>
+          </tr>
+        </table>
+      </Fieldset>
     </Panel>
   </Panel>
 </template>
@@ -55,6 +64,7 @@ export default defineComponent({
     const phonemeData = (await APIWrapper.getPhonemes()).phonemes;
     const selectedTrainPhonemes = ref([]);
     const dropdownPhoneme = ref();
+    const rows = ref(0);
 
     function sendDropdownPhoneme() {
       if (dropdownPhoneme.value !== undefined) {
@@ -77,10 +87,7 @@ export default defineComponent({
 
     function sendForcedIdentification() {
       const buttonDiv = document.getElementById("forcedIdentificationButtons")
-      if (buttonDiv === null) {
-        alert("No div for placing buttons, something went wrong!");
-        return;
-      }
+      if (buttonDiv === null) {return}
 
       // reset div
       buttonDiv.innerHTML = '';
@@ -95,7 +102,15 @@ export default defineComponent({
       const randomPhonemes = getRandom(selectedTrainPhonemes.value as any, Math.min(3, selectedTrainPhonemes.value.length));
       const playedPhoneme: string = getRandom(randomPhonemes, 1)[0];
 
-      // APIWrapper.sendPhonemeMicrocontroller({'phonemes': playedPhoneme});
+      APIWrapper.sendPhonemeMicrocontroller({'phonemes': [playedPhoneme]});
+
+      rows.value++;
+      const pTable = document.getElementById("phoneme-table");
+      if (pTable === null) {return}
+      const row = document.createElement("tr");
+      row.insertCell()
+      row.innerHTML = "<td>"+ rows.value + "</td><td>" + playedPhoneme + "</td><td id='pTableRow_" + rows.value + "'></td>";
+      pTable.appendChild(row);
 
 
       const textDiv = document.createElement('div');
@@ -111,13 +126,16 @@ export default defineComponent({
         createApp(Button, {label: phoneme, id: "fid_" + phoneme}).mount(div);
 
         const btn = document.getElementById("fid_" + phoneme);
-        if (btn === null) {alert("NOPE"); return}
+        const guessesCell = document.getElementById("pTableRow_" + rows.value);
+        if (btn === null || guessesCell === null) {return}
         btn.addEventListener("click", function () {
           const bgColor = btn.style.background;
           if (phoneme === playedPhoneme) {
             btn.style.background = "green";
+            guessesCell.innerHTML += "<span style='background: green'>" + phoneme + "</span>";
           } else {
             btn.style.background = "red";
+            guessesCell.innerHTML += "<span style='background: red'>" + phoneme + "</span>";
           }
           setTimeout(() => {
             btn.style.background = bgColor
@@ -137,6 +155,7 @@ export default defineComponent({
       phonemes,
       selectedTrainPhonemes,
       dropdownPhoneme,
+      rows,
 
       sendDropdownPhoneme,
       sendRandomPhoneme,

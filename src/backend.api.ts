@@ -50,7 +50,7 @@ export default class APIWrapper {
             .catch(e => console.log(e));
     }
 
-    public static sendPhonemeMicrocontroller(body: any, config?: AxiosRequestConfig) {
+    public static async sendPhonemeMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/phonemes', body, config)
             .then(handleApiResponse)
             .catch(e => console.log(e));
