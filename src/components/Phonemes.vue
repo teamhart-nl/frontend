@@ -187,10 +187,10 @@ export default defineComponent({
           const bgColor = btn.style.background;
           if (phoneme === playedPhoneme) {
             btn.style.background = "green";
-            guessesCell.innerHTML += "<span style='background: green'>" + phoneme + "</span>";
+            guessesCell.innerHTML += "<span style='background: green; margin-right: 3px; padding: 2px'>" + phoneme + "</span>";
           } else {
             btn.style.background = "red";
-            guessesCell.innerHTML += "<span style='background: red'>" + phoneme + "</span>";
+            guessesCell.innerHTML += "<span style='background: red; margin-right: 3px; padding: 2px'>" + phoneme + "</span>";
           }
           setTimeout(() => {
             btn.style.background = bgColor
