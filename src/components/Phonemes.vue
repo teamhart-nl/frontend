@@ -2,7 +2,7 @@
   <h1>Phonemes!</h1>
 
   <!-- Panel for sending a specific phoneme -->
-  <Panel header="Send a chosen phoneme" style="margin-bottom: 10px">
+  <Panel header="Send a chosen phoneme">
     <p>To just try out how a single phoneme feels, and play it on the prototype, you can select a phoneme in the
       dropdown menu and send it to the arduino by clicking the button.</p>
 
@@ -23,7 +23,7 @@
     <br>
 
     <!-- Subpanel for sending random phoneme -->
-    <Panel header="Send random" style="margin-bottom: 10px">
+    <Panel header="Send random">
       <Button @click="sendRandomPhoneme()" style="padding: 1.2rem">Send random phoneme!</Button>
     </Panel>
 

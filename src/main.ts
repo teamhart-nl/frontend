@@ -20,6 +20,7 @@ import Fieldset from "primevue/fieldset";
 
 import './assets/layout/reset.css';
 import './assets/layout/style.css';
+import AutoComplete from "primevue/autocomplete";
 
 const app = createApp(App)
 
@@ -32,5 +33,6 @@ app.component('Checkbox', Checkbox);
 app.component('Dropdown', Dropdown);
 app.component('Panel', Panel);
 app.component('Fieldset', Fieldset);
+app.component('AutoComplete', AutoComplete);
 
 app.mount('#app')
