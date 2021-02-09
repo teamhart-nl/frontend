@@ -43,6 +43,7 @@ p {
     font-size: var(--text-size);
 }
 
+/* Phoneme tab styling */
 #phoneme-table,
 #phoneme-table th,
 #phoneme-table td {

@@ -50,6 +50,12 @@ export default class APIWrapper {
             .catch(e => console.log(e));
     }
 
+    /**
+     * Sends a phoneme to the microcontroller via the microcontroller/phoneme backend endpoint.
+     *
+     * @param body      JSON containing the phonemes to send (check backend endpoint for specification.
+     * @param config    (OPTIONAL) Axios config for configuring request.
+     */
     public static async sendPhonemeMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/phonemes', body, config)
             .then(handleApiResponse)
