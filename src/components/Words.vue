@@ -79,10 +79,10 @@ export default defineComponent({
      * Function that filters the words list for all autocomplete input fields.
      * @param event   The event emitted from the input field upon updating.
      */
-    function searchWord(event) {
+    function searchWord(event: any) {
       filteredWords.value = ref(words.value.map((w) => {
         return w.name.includes(event.query) ? w : null
-      }).filter(w => !!w));
+      }).filter(w => !!w)) as any;
     }
 
     /**
@@ -104,8 +104,8 @@ export default defineComponent({
       }
 
       // Get a set of random words from the selected words.
-      const randomWords = getRandom(selectedWords.value, Math.min(3, selectedWords.value.length))
-          .map(w => {return w.name});
+      const randomWords = getRandom(selectedWords.value as any, Math.min(3, selectedWords.value.length))
+          .map((w: {name: string}) => {return w.name});
       const playedWord = getRandom(randomWords, 1)[0];
       console.log(randomWords, playedWord);
       // TODO connect to backend!
