@@ -1,3 +1,8 @@
+:root {
+    --header-size: 2rem;
+    --text-size: 1.7rem;
+}
+
 #app {
     margin: 10px;
 }
@@ -6,14 +11,46 @@
     width: 100%;
     background: #ffffff;
     margin-top: 10px;
-    height: 80vh;
-    padding: 10px;
+    min-height: 80vh;
+    padding: 30px;
 }
 
-.p-component {
+.p-tabmenu {
     font-size: 2.5rem;
 }
 
-.pi {
+.p-tabmenu .pi {
     font-size: 1.8rem;
+}
+
+.p-panel .p-panel-header .p-panel-title {
+    font-size: var(--header-size);
+}
+
+.p-placeholder {
+    font-size: var(--text-size);
+}
+
+.p-component {
+    font-size: var(--text-size);
+}
+
+.p-inputtext {
+    font-size: var(--text-size);
+}
+
+p {
+    font-size: var(--text-size);
+}
+
+/* Phoneme tab styling */
+#phoneme-table,
+#phoneme-table th,
+#phoneme-table td {
+    border: 1px solid black;
+}
+
+#phoneme-table th,
+#phoneme-table td {
+    padding: 10px;
 }
