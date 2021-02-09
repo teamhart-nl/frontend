@@ -52,12 +52,17 @@ p {
 }
 
 /* Phoneme tab styling */
+#random-phoneme-table,
+#random-phoneme-table th,
+#random-phoneme-table td,
 #phoneme-table,
 #phoneme-table th,
 #phoneme-table td {
     border: 1px solid black;
 }
 
+#random-phoneme-table th,
+#random-phoneme-table td,
 #phoneme-table th,
 #phoneme-table td {
     padding: 10px;

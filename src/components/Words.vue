@@ -13,6 +13,8 @@
     <Button @click="sendACWord()" style="padding: 1.1rem">Send word!</Button>
   </Panel>
   <Panel header="Selection based training">
+    <p>Select (using the autocomplete function), the words that you would like to train on. Only words from the list
+      (which can be configured above) can be used for training.</p>
     <AutoComplete :multiple="true" v-model="selectedWords" :suggestions="filteredWords.value"
                   @complete="searchWord($event)" field="name" style="width: 100%"/>
   </Panel>
@@ -80,8 +82,10 @@ export default defineComponent({
      */
     function addWord() {
       if (selectedWord.value === undefined) {
+        // If nothing typed, alert user.
         alert("Please type a word first before inserting!");
       } else {
+        // Add word to list
         alert("'" + selectedWord.value + "' was added to the list");
         words.value.push({name: selectedWord.value});
         selectedWord.value = "";
@@ -93,14 +97,19 @@ export default defineComponent({
      */
     function removeWord() {
       if (selectedWord.value === undefined) {
+        // If nothing typed, alert user
         alert("Please type a word first before removing!");
       } else {
+        // Find word in list
         const index = words.value.findIndex(o => {
           return (o.name === selectedWord.value.name) || o.name === selectedWord.value
         });
+
         if (index === -1) {
+          // If not found, alert user
           alert("Word not found in list, thus cannot be removed.");
         } else {
+          // Remove word from list.
           alert("'" + words.value[index].name + "' was removed from the list");
           words.value.splice(index, 1);
           selectedWord.value = "";

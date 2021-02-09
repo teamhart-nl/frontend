@@ -22,11 +22,6 @@
     </div>
     <br>
 
-    <!-- Subpanel for sending random phoneme -->
-    <Panel header="Send random">
-      <Button @click="sendRandomPhoneme()" style="padding: 1.2rem">Send random phoneme!</Button>
-    </Panel>
-
     <!-- Subpanel for forced identification -->
     <Panel header="Forced identification">
       <p>By clicking the button, a phoneme will be send to the arduino, and you will get to see three buttons, and have
@@ -43,6 +38,20 @@
         </table>
       </Fieldset>
     </Panel>
+
+    <!-- Subpanel for sending random phoneme -->
+    <Panel header="Send random">
+      <Button @click="sendRandomPhoneme()" style="padding: 1.2rem">Send random phoneme!</Button>
+      <Fieldset legend="Answers (history)" :toggleable="true" :collapsed="true">
+        <table id="random-phoneme-table">
+          <tr>
+            <th>Round</th>
+            <th>Correct answer</th>
+          </tr>
+        </table>
+      </Fieldset>
+    </Panel>
+
   </Panel>
 </template>
 
@@ -84,7 +93,8 @@ export default defineComponent({
     // Initialize variables used throughout component
     const selectedTrainPhonemes = ref([]);
     const dropdownPhoneme = ref();
-    const rows = ref(0);
+    const fiRows = ref(0);
+    const raRows = ref(0);
 
     /**
      * Function for sending a phoneme from the dropdown menu
@@ -113,6 +123,16 @@ export default defineComponent({
         const randomPhoneme = selectedTrainPhonemes.value[Math.floor(Math.random() * selectedTrainPhonemes.value.length)]
         const json = {'phonemes': [randomPhoneme]};
         APIWrapper.sendPhonemeMicrocontroller(json);
+
+        // Add answer to the table
+        const pTable = document.getElementById("random-phoneme-table");
+        if (pTable === null) {return;}
+
+        const row = document.createElement("tr");
+        raRows.value++;
+        row.insertCell()
+        row.innerHTML = "<td>" + raRows.value + "</td><td>" + randomPhoneme + "</td>";
+        pTable.appendChild(row);
       }
     }
 
@@ -143,7 +163,7 @@ export default defineComponent({
       APIWrapper.sendPhonemeMicrocontroller({'phonemes': [playedPhoneme]});
 
       // Increase the number of forced identification rounds.
-      rows.value++;
+      fiRows.value++;
 
       // Get the answer table
       const pTable = document.getElementById("phoneme-table");
@@ -154,7 +174,7 @@ export default defineComponent({
       // Create new row element for table
       const row = document.createElement("tr");
       row.insertCell()
-      row.innerHTML = "<td>" + rows.value + "</td><td>" + playedPhoneme + "</td><td id='pTableRow_" + rows.value + "'></td>";
+      row.innerHTML = "<td>" + fiRows.value + "</td><td>" + playedPhoneme + "</td><td id='pTableRow_" + fiRows.value + "'></td>";
       pTable.appendChild(row);
 
       // Add explanation div
@@ -177,7 +197,7 @@ export default defineComponent({
         const btn = document.getElementById("fid_" + phoneme);
 
         // Get the table cell for guesses from the page
-        const guessesCell = document.getElementById("pTableRow_" + rows.value);
+        const guessesCell = document.getElementById("pTableRow_" + fiRows.value);
         if (btn === null || guessesCell === null) {
           return
         }
@@ -211,7 +231,8 @@ export default defineComponent({
       phonemes,
       selectedTrainPhonemes,
       dropdownPhoneme,
-      rows,
+      fiRows,
+      raRows,
 
       sendDropdownPhoneme,
       sendRandomPhoneme,
