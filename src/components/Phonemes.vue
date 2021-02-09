@@ -59,27 +59,7 @@
 import {createApp, defineComponent, ref} from "vue";
 import APIWrapper from "@/backend.api";
 import Button from "primevue/button";
-
-/**
- * Function that gets a random subset of length n from an array of objects.
- *
- * @param arr     The array of objects.
- * @param n       The number of objects to be returned.
- * @return [any]  Array of length n.
- */
-function getRandom(arr: [any], n: number): any {
-  let result: any[] = new Array(n),
-      len = arr.length,
-      taken = new Array(len);
-  if (n > len)
-    throw new RangeError("getRandom: more elements taken than available");
-  while (n--) {
-    const x = Math.floor(Math.random() * len);
-    result[n] = arr[x in taken ? taken[x] : x];
-    taken[x] = --len in taken ? taken[len] : len;
-  }
-  return result;
-}
+import {getRandom} from "@/helpers/array.helper";
 
 export default defineComponent({
   name: 'Phonemes',
@@ -143,7 +123,7 @@ export default defineComponent({
       // Get div from page for placing buttons
       const buttonDiv = document.getElementById("forcedIdentificationButtons")
       if (buttonDiv === null) {
-        return
+        return;
       }
 
       // empty button div
@@ -152,7 +132,7 @@ export default defineComponent({
       // check if some phonemes are selected
       if (selectedTrainPhonemes.value.length === 0) {
         alert("Please select phonemes to train on");
-        return
+        return;
       }
 
       // get a set of random phonemes from the selected phonemes
@@ -173,7 +153,6 @@ export default defineComponent({
 
       // Create new row element for table
       const row = document.createElement("tr");
-      row.insertCell()
       row.innerHTML = "<td>" + fiRows.value + "</td><td>" + playedPhoneme + "</td><td id='pTableRow_" + fiRows.value + "'></td>";
       pTable.appendChild(row);
 
@@ -203,7 +182,7 @@ export default defineComponent({
         }
 
         // Add button event listener
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click", () => {
           const bgColor = btn.style.background;
           if (phoneme === playedPhoneme) {
             btn.style.background = "green";
@@ -216,7 +195,6 @@ export default defineComponent({
             btn.style.background = bgColor
           }, 1000);
         });
-
       })
     }
 
