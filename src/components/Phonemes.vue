@@ -2,7 +2,7 @@
   <h1>Phonemes!</h1>
 
   <!-- Panel for sending a specific phoneme -->
-  <Panel header="Send a chosen phoneme" style="margin-bottom: 10px">
+  <Panel header="Send a chosen phoneme">
     <p>To just try out how a single phoneme feels, and play it on the prototype, you can select a phoneme in the
       dropdown menu and send it to the arduino by clicking the button.</p>
 
@@ -22,11 +22,6 @@
     </div>
     <br>
 
-    <!-- Subpanel for sending random phoneme -->
-    <Panel header="Send random" style="margin-bottom: 10px">
-      <Button @click="sendRandomPhoneme()" style="padding: 1.2rem">Send random phoneme!</Button>
-    </Panel>
-
     <!-- Subpanel for forced identification -->
     <Panel header="Forced identification">
       <p>By clicking the button, a phoneme will be send to the arduino, and you will get to see three buttons, and have
@@ -43,6 +38,20 @@
         </table>
       </Fieldset>
     </Panel>
+
+    <!-- Subpanel for sending random phoneme -->
+    <Panel header="Send random">
+      <Button @click="sendRandomPhoneme()" style="padding: 1.2rem">Send random phoneme!</Button>
+      <Fieldset legend="Answers (history)" :toggleable="true" :collapsed="true">
+        <table id="random-phoneme-table">
+          <tr>
+            <th>Round</th>
+            <th>Correct answer</th>
+          </tr>
+        </table>
+      </Fieldset>
+    </Panel>
+
   </Panel>
 </template>
 
@@ -50,27 +59,7 @@
 import {createApp, defineComponent, ref} from "vue";
 import APIWrapper from "@/backend.api";
 import Button from "primevue/button";
-
-/**
- * Function that gets a random subset of length n from an array of objects.
- *
- * @param arr     The array of objects.
- * @param n       The number of objects to be returned.
- * @return [any]  Array of length n.
- */
-function getRandom(arr: [any], n: number): any {
-  let result: any[] = new Array(n),
-      len = arr.length,
-      taken = new Array(len);
-  if (n > len)
-    throw new RangeError("getRandom: more elements taken than available");
-  while (n--) {
-    const x = Math.floor(Math.random() * len);
-    result[n] = arr[x in taken ? taken[x] : x];
-    taken[x] = --len in taken ? taken[len] : len;
-  }
-  return result;
-}
+import {getRandom} from "@/helpers/array.helper";
 
 export default defineComponent({
   name: 'Phonemes',
@@ -84,7 +73,8 @@ export default defineComponent({
     // Initialize variables used throughout component
     const selectedTrainPhonemes = ref([]);
     const dropdownPhoneme = ref();
-    const rows = ref(0);
+    const fiRows = ref(0);
+    const raRows = ref(0);
 
     /**
      * Function for sending a phoneme from the dropdown menu
@@ -113,6 +103,16 @@ export default defineComponent({
         const randomPhoneme = selectedTrainPhonemes.value[Math.floor(Math.random() * selectedTrainPhonemes.value.length)]
         const json = {'phonemes': [randomPhoneme]};
         APIWrapper.sendPhonemeMicrocontroller(json);
+
+        // Add answer to the table
+        const pTable = document.getElementById("random-phoneme-table");
+        if (pTable === null) {return;}
+
+        const row = document.createElement("tr");
+        raRows.value++;
+        row.insertCell()
+        row.innerHTML = "<td>" + raRows.value + "</td><td>" + randomPhoneme + "</td>";
+        pTable.appendChild(row);
       }
     }
 
@@ -123,7 +123,7 @@ export default defineComponent({
       // Get div from page for placing buttons
       const buttonDiv = document.getElementById("forcedIdentificationButtons")
       if (buttonDiv === null) {
-        return
+        return;
       }
 
       // empty button div
@@ -132,7 +132,7 @@ export default defineComponent({
       // check if some phonemes are selected
       if (selectedTrainPhonemes.value.length === 0) {
         alert("Please select phonemes to train on");
-        return
+        return;
       }
 
       // get a set of random phonemes from the selected phonemes
@@ -143,7 +143,7 @@ export default defineComponent({
       APIWrapper.sendPhonemeMicrocontroller({'phonemes': [playedPhoneme]});
 
       // Increase the number of forced identification rounds.
-      rows.value++;
+      fiRows.value++;
 
       // Get the answer table
       const pTable = document.getElementById("phoneme-table");
@@ -153,8 +153,7 @@ export default defineComponent({
 
       // Create new row element for table
       const row = document.createElement("tr");
-      row.insertCell()
-      row.innerHTML = "<td>" + rows.value + "</td><td>" + playedPhoneme + "</td><td id='pTableRow_" + rows.value + "'></td>";
+      row.innerHTML = "<td>" + fiRows.value + "</td><td>" + playedPhoneme + "</td><td id='pTableRow_" + fiRows.value + "'></td>";
       pTable.appendChild(row);
 
       // Add explanation div
@@ -177,26 +176,25 @@ export default defineComponent({
         const btn = document.getElementById("fid_" + phoneme);
 
         // Get the table cell for guesses from the page
-        const guessesCell = document.getElementById("pTableRow_" + rows.value);
+        const guessesCell = document.getElementById("pTableRow_" + fiRows.value);
         if (btn === null || guessesCell === null) {
           return
         }
 
         // Add button event listener
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click", () => {
           const bgColor = btn.style.background;
           if (phoneme === playedPhoneme) {
             btn.style.background = "green";
-            guessesCell.innerHTML += "<span style='background: green'>" + phoneme + "</span>";
+            guessesCell.innerHTML += "<span style='background: green; margin-right: 3px; padding: 2px'>" + phoneme + "</span>";
           } else {
             btn.style.background = "red";
-            guessesCell.innerHTML += "<span style='background: red'>" + phoneme + "</span>";
+            guessesCell.innerHTML += "<span style='background: red; margin-right: 3px; padding: 2px'>" + phoneme + "</span>";
           }
           setTimeout(() => {
             btn.style.background = bgColor
           }, 1000);
         });
-
       })
     }
 
@@ -211,7 +209,8 @@ export default defineComponent({
       phonemes,
       selectedTrainPhonemes,
       dropdownPhoneme,
-      rows,
+      fiRows,
+      raRows,
 
       sendDropdownPhoneme,
       sendRandomPhoneme,
