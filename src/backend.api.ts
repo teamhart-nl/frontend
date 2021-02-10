@@ -61,4 +61,10 @@ export default class APIWrapper {
             .then(handleApiResponse)
             .catch(e => console.log(e));
     }
+
+    public static async sendWordsMicrocontroller(body: any, config?: AxiosRequestConfig) {
+        return backendApi.post('/api/v1/microcontroller/words', body, config)
+            .then(handleApiResponse)
+            .catch(e => console.log(e));
+    }
 }

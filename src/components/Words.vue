@@ -40,6 +40,7 @@
 import {createApp, defineComponent, ref} from "vue";
 import {getRandom} from "@/helpers/array.helper";
 import Button from "primevue/button";
+import APIWrapper from "@/backend.api";
 
 export default defineComponent({
   name: 'Words',
@@ -89,10 +90,17 @@ export default defineComponent({
      * Function for sending a word to the arduino.
      */
     function sendACWord() {
+      if (selectedWord.value === undefined) {
+        alert("Please insert a word to send");
+        return
+      }
+
       if (typeof selectedWord.value !== "string") {
-        alert("word from list");
+        APIWrapper.sendWordsMicrocontroller({'words': [selectedWord.value.name]})
+        alert("Sent '" + selectedWord.value.name + "' to the microcontroller");
       } else {
-        alert("word not from list");
+        APIWrapper.sendWordsMicrocontroller({'words': [selectedWord.value]})
+        alert("Sent '" + selectedWord.value + "' to the microcontroller");
       }
     }
 
@@ -107,8 +115,9 @@ export default defineComponent({
       const randomWords = getRandom(selectedWords.value as any, Math.min(3, selectedWords.value.length))
           .map((w: {name: string}) => {return w.name});
       const playedWord = getRandom(randomWords, 1)[0];
-      console.log(randomWords, playedWord);
-      // TODO connect to backend!
+
+      // Play chosen word on the microcontroller
+      APIWrapper.sendWordsMicrocontroller({'words': [playedWord]});
 
       // Increase the number of forced identification rounds
       fiRows.value++;
