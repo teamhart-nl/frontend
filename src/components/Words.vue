@@ -51,28 +51,47 @@ export default defineComponent({
     const inputWord = ref();
     const fiRows = ref(0);
     const words = ref([
-      {name: "meat"},
-      {name: "hurt"},
+      // 2 phoneme words
       {name: "see"},
       {name: "me"},
-      {name: "he"},
       {name: "tea"},
       {name: "key"},
+      {name: "he"},
+      {name: "eat"},
+      {name: "saw"},
+      {name: "raw"},
+
+      // 3 phoneme words
+      {name: "meet"}, // (also) meat
+      {name: "hurt"},
       {name: "heat"},
       {name: "seat"},
-      {name: "skirt"},
-      {name: "treat"},
-      {name: "eat"},
       {name: "rot"},
       {name: "hot"},
-      {name: "cost"},
       {name: "hook"},
       {name: "seek"},
       {name: "took"},
       {name: "cook"},
-      {name: "saw"},
+      {name: "seem"},
+      {name: "meme"},
+      {name: "team"},
+      {name: "sought"},
+
+      // 4 phoneme words
+      {name: "treat"},
+      {name: "skirt"},
+      {name: "cost"},
       {name: "straw"},
-      {name: "heart"}, // HART
+      {name: "heart"}, // (also) HART
+      {name: "mask"}, // (also) mosque
+      {name: "scar"},
+
+      // 5 phoneme words
+      {name: "smart"},
+
+      // 6 phoneme words
+      {name: "retard"},
+
     ]);
     let filteredWords = ref(words.value)
 
