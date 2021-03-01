@@ -116,10 +116,8 @@ export default defineComponent({
 
       if (typeof selectedWord.value !== "string") {
         APIWrapper.sendWordsMicrocontroller({'words': [selectedWord.value.name]})
-        alert("Sent '" + selectedWord.value.name + "' to the microcontroller");
       } else {
         APIWrapper.sendWordsMicrocontroller({'words': [selectedWord.value]})
-        alert("Sent '" + selectedWord.value + "' to the microcontroller");
       }
     }
 
