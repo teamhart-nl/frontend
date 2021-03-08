@@ -129,8 +129,7 @@ export default defineComponent({
       }
 
       // Get a set of random words from the selected words.
-      const randomWords = getRandom(selectedWords.value as any, Math.min(3, selectedWords.value.length))
-          .map((w: {name: string}) => {return w.name});
+      const randomWords = (selectedWords.value as any).map((w: {name: string}) => {return w.name});
       const playedWord = getRandom(randomWords, 1)[0];
 
       // Play chosen word on the microcontroller
