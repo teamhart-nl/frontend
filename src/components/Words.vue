@@ -105,7 +105,11 @@ export default defineComponent({
 
     ]);
     const languages = ref([
-      {language: "English", short: "en"}
+      {language: "English", short: "en"},
+      {language: "French", short: 'fr'},
+      {language: "German", short: 'de'},
+      {language: "French", short: 'fr'},
+      {language: "Russian", short: 'ru'}
     ]);
 
     let filteredWords = ref(words.value)
