@@ -237,7 +237,7 @@ export default defineComponent({
         alert("Please write a sentence that you would like to send.");
       }
 
-      APIWrapper.sendWordsMicrocontroller({'sentences': [inputSentence.value], 'language': selectedLanguage.value.short});
+      APIWrapper.sendSentencesMicrocontroller({'sentences': [inputSentence.value], 'language': selectedLanguage.value.short});
     }
 
     /**
