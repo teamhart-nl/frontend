@@ -136,7 +136,7 @@ export default defineComponent({
       }
 
       // get a set of random phonemes from the selected phonemes
-      const randomPhonemes = getRandom(selectedTrainPhonemes.value as any, Math.min(3, selectedTrainPhonemes.value.length));
+      const randomPhonemes = (selectedTrainPhonemes.value as any)
       const playedPhoneme: string = getRandom(randomPhonemes, 1)[0];
 
       // Send selected phoneme to backend

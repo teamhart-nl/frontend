@@ -116,10 +116,8 @@ export default defineComponent({
 
       if (typeof selectedWord.value !== "string") {
         APIWrapper.sendWordsMicrocontroller({'words': [selectedWord.value.name]})
-        alert("Sent '" + selectedWord.value.name + "' to the microcontroller");
       } else {
         APIWrapper.sendWordsMicrocontroller({'words': [selectedWord.value]})
-        alert("Sent '" + selectedWord.value + "' to the microcontroller");
       }
     }
 
@@ -131,8 +129,7 @@ export default defineComponent({
       }
 
       // Get a set of random words from the selected words.
-      const randomWords = getRandom(selectedWords.value as any, Math.min(3, selectedWords.value.length))
-          .map((w: {name: string}) => {return w.name});
+      const randomWords = (selectedWords.value as any).map((w: {name: string}) => {return w.name});
       const playedWord = getRandom(randomWords, 1)[0];
 
       // Play chosen word on the microcontroller
