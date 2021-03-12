@@ -34,6 +34,16 @@
       </Fieldset>
     </Panel>
   </Panel>
+
+  <Panel header="Send sentences">
+    <p>Type a sentence you want to send to the microcontroller and select a language that it is written in.</p>
+    <InputText type="text" v-model="inputSentence" style="width: 100%; margin-bottom: 10px"/>
+    <AutoComplete v-model="selectedLanguage" :dropdown="true" :suggestions="filteredLanguages.value"
+                  placeholder="Select language" @complete="searchLanguage($event)"
+                  field="language" style="margin-right: 10px"/>
+    <Button @click="sendSentence()" style="padding: 1.1rem; margin-right: 10px">Send sentence!</Button>
+
+  </Panel>
 </template>
 
 <script lang="ts">
@@ -48,7 +58,8 @@ export default defineComponent({
   setup: async () => {
     const selectedWord = ref();
     const selectedWords = ref([]);
-    const inputWord = ref();
+    const selectedLanguage = ref();
+    const inputSentence = ref();
     const fiRows = ref(0);
     const words = ref([
       // 2 phoneme words
@@ -93,7 +104,12 @@ export default defineComponent({
       {name: "retard"},
 
     ]);
+    const languages = ref([
+      {language: "English", short: "en"}
+    ]);
+
     let filteredWords = ref(words.value)
+    let filteredLanguages = ref(languages.value)
 
     /**
      * Function that filters the words list for all autocomplete input fields.
@@ -102,6 +118,16 @@ export default defineComponent({
     function searchWord(event: any) {
       filteredWords.value = ref(words.value.map((w) => {
         return w.name.includes(event.query) ? w : null
+      }).filter(w => !!w)) as any;
+    }
+
+    /**
+     * Function that filters the languages list for all autocomplete input fields.
+     * @param event   The event emitted from the input field upon updating.
+     */
+    function searchLanguage(event: any) {
+      filteredLanguages.value = ref(languages.value.map((w) => {
+        return w.language.includes(event.query) ? w : null
       }).filter(w => !!w)) as any;
     }
 
@@ -123,6 +149,9 @@ export default defineComponent({
       }
     }
 
+    /**
+     * Function for executing forced identification behavior.
+     */
     function sendForcedIdentification() {
       // Check if words are selected. If no words are selected, alert user and return.
       if (selectedWords.value.length === 0) {
@@ -197,6 +226,21 @@ export default defineComponent({
     }
 
     /**
+     * Function for sending written sentence to the arduino.
+     */
+    function sendSentence() {
+      if (selectedLanguage.value === undefined) {
+        alert("Please select a language in which the sentence is written.");
+      }
+
+      if (inputSentence.value === undefined) {
+        alert("Please write a sentence that you would like to send.");
+      }
+
+      console.log(inputSentence.value, selectedLanguage.value);
+    }
+
+    /**
      * Function for adding a word to the list of words.
      */
     function addWord() {
@@ -239,13 +283,18 @@ export default defineComponent({
     return {
       selectedWord,
       selectedWords,
-      inputWord,
       filteredWords,
       words,
+      languages,
+      filteredLanguages,
+      selectedLanguage,
+      inputSentence,
 
       searchWord,
+      searchLanguage,
       sendACWord,
       sendForcedIdentification,
+      sendSentence,
       addWord,
       removeWord,
     }
