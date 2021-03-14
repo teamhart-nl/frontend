@@ -73,4 +73,16 @@ export default class APIWrapper {
             .then(handleApiResponse)
             .catch(e => console.log(e));
     }
+
+    /**
+     * Sends a list of sentences to the microcontroller via the microcontroller/sentences backend endpoint.
+     *
+     * @param body      JSON containing the sentences to send (check backend endpoint for specification).
+     * @param config    (OPTIONAL) Axios config for configuring request.
+     */
+    public static async sendSentencesMicrocontroller(body: any, config?: AxiosRequestConfig) {
+        return backendApi.post('/api/v1/microcontroller/sentences', body, config)
+            .then(handleApiResponse)
+            .catch(e => console.log(e));
+    }
 }
