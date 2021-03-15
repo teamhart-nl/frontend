@@ -299,6 +299,9 @@ export default defineComponent({
       addWord,
       removeWord,
     }
+  },
+  created() {
+    document.title = "HART Prototype - Words"
   }
 })
 </script>

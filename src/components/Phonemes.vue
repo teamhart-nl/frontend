@@ -216,6 +216,9 @@ export default defineComponent({
       sendRandomPhoneme,
       sendForcedIdentification
     }
+  },
+  created() {
+    document.title = "HART Prototype - Phonemes"
   }
 })
 </script>

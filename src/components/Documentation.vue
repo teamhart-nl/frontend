@@ -12,6 +12,9 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
   name: 'Documentation',
+  created() {
+    document.title = "HART Prototype - Documentation"
+  }
 })
 </script>
 

@@ -7,6 +7,9 @@ import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: 'Audio',
+  created() {
+    document.title = "HART Prototype - Audio"
+  }
 })
 </script>
 
