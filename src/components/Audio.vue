@@ -11,6 +11,7 @@
               placeholder="Select language" @complete="searchLanguage($event)"
               field="language" style="margin-right: 10px"/>
   </Panel>
+
 </template>
 
 <script lang="ts">
@@ -36,12 +37,23 @@ export default defineComponent({
     let filteredLanguages = ref(languages.value)
 
     function sendFile(){
-        APIWrapper.sendAudioFile(uploadedFile, {
+      if (selectedLanguage.value === undefined) {
+        alert("Please select the spoken language");
+        return
+      }
+
+      if (uploadedFile.value === undefined) {
+        alert("Please upload an audio file");
+        return
+      }
+
+      APIWrapper.sendAudioFile(uploadedFile, {
             source_language: selectedLanguage.value.short,
             target_language: "en"
-        })
+      })
     }
 
+    //update the uploaded file
     function onFileSelected(event: any) {
         uploadedFile = event.target.files[0]
     }
@@ -56,16 +68,16 @@ export default defineComponent({
       }).filter(w => !!w)) as any;
     }
 
-      return {
-        uploadedFile,
-        selectedLanguage,
-        filteredLanguages,
-        languages,
+    return {
+      uploadedFile,
+      selectedLanguage,
+      filteredLanguages,
+      languages,
 
-        sendFile,
-        onFileSelected,
-        searchLanguage
-      }
+      sendFile,
+      onFileSelected,
+      searchLanguage
+    }
   }
 
 })
