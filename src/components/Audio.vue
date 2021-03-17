@@ -2,7 +2,6 @@
   <h1>Audio!</h1>
 
   <Panel header="Upload your file!"> 
-    <Button @click="onPickFile">Upload profile picture</Button>
     <input
       type="file"
       ref="fileInput"
