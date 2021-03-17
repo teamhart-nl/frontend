@@ -85,4 +85,27 @@ export default class APIWrapper {
             .then(handleApiResponse)
             .catch(e => console.log(e));
     }
+
+    public static sendAudioFile(file: any, config?: AxiosRequestConfig){
+        var formData = new FormData();
+        formData.append("file", file);
+        formData.append('data', new Blob([JSON.stringify({
+            source_language: "nl",
+            target_language: "en"
+        })], {
+            type: "application/json"
+        }));
+        var request = new XMLHttpRequest();
+        request.open("POST", ApiURL + "/api/v1/microcontroller/audiofile");
+        request.send(formData);
+        request.onreadystatechange = function () {
+          if (request.readyState === 4) {
+            if (request.status === 200 && request.statusText === 'OK') {
+              console.log('successful');
+            } else {
+              console.log('failed');
+            }
+          }
+        }
+    }
 }
