@@ -23,6 +23,8 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import APIWrapper from "@/backend.api";
+import {audioBufferToMp3} from "@/helpers/audio.converter.helper";
+// const FileType = require('file-type');
 
 export default defineComponent({
   name: 'Audio',
@@ -60,11 +62,16 @@ export default defineComponent({
       })
     }
 
+    function sendRecording(recording: any) {
+      APIWrapper.sendAudioFile(recording, {source_language: "en", target_language: "en"});
+    }
+
     /**
      * On change event for the file upload button
      */
     function onFileSelected(event: any) {
       uploadedFile = event.target.files[0]
+      console.log(uploadedFile);
     }
 
     /**
@@ -83,14 +90,22 @@ export default defineComponent({
     }
 
     function recordStream(stream: any) {
+      // List for storing data
       const items: any[] = [];
 
       // @ts-ignore
-      recorder = new MediaRecorder(stream, {mimeType: "audio/webm"});
+      const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
+
+      // @ts-ignore
+      recorder = new MediaRecorder(stream, {mimeType: mime});
+
+      recorder.addEventListener('start', () => {
+        // Empty the collection when starting recording.
+        items.length = 0;
+      });
 
       // @ts-ignore
       recorder.ondataavailable = (e) => {
-        console.log("data!")
         items.push(e.data);
       };
 
@@ -119,6 +134,10 @@ export default defineComponent({
       // @ts-ignore
       fileReader.onload = () => ctx.decodeAudioData(fileReader.result)
           .then(buf => {
+
+            // const mp3 = audioBufferToMp3(buf);
+            // sendRecording(mp3);
+
             const btn = document.getElementById("play-btn");
             // @ts-ignore
             btn.onclick = () => {
