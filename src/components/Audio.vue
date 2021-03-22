@@ -16,6 +16,7 @@
     <Button @click="startRecord()" type="button" id="button_record" class="p-button">Record</Button>
     <Button @click="stopRecord()" type="button" id="button_stop" class="p-button-danger">Stop Recording</Button>
     <Button id="play-btn" class="p-button" disabled>play</Button>
+    <Button @click="sendRecording()" id="send-btn" class="p-button" disabled>Send Audio!</Button>
   </Panel>
 
 </template>
@@ -23,8 +24,6 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import APIWrapper from "@/backend.api";
-import {audioBufferToMp3} from "@/helpers/audio.converter.helper";
-// const FileType = require('file-type');
 
 export default defineComponent({
   name: 'Audio',
@@ -33,6 +32,8 @@ export default defineComponent({
     let uploadedFile: any = undefined;
     const selectedLanguage = ref();
     let recorder: any;
+    let mime: any;
+    let audio: any = undefined;
 
     const languages = ref([
       {language: "Dutch", short: "nl"},
@@ -58,12 +59,17 @@ export default defineComponent({
 
       APIWrapper.sendAudioFile(uploadedFile, {
         source_language: selectedLanguage.value.short,
-        target_language: "en"
+        target_language: "en",
+        type: "audio/flac"
       })
     }
 
-    function sendRecording(recording: any) {
-      APIWrapper.sendAudioFile(recording, {source_language: "en", target_language: "en"});
+    function sendRecording() {
+      if (audio === undefined) {
+        return alert("Record some audio first!")
+      }
+
+      APIWrapper.sendAudioFile(audio, {source_language: "en", target_language: "en", type: mime});
     }
 
     /**
@@ -94,7 +100,7 @@ export default defineComponent({
       const items: any[] = [];
 
       // @ts-ignore
-      const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
+      mime = ['audio/webm', 'audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
 
       // @ts-ignore
       recorder = new MediaRecorder(stream, {mimeType: mime});
@@ -124,8 +130,8 @@ export default defineComponent({
     }
 
     function finalize(chunks: any) {
-      const blob = new Blob(chunks)
-      playMedia(blob);
+      audio = new Blob(chunks, {type: mime})
+      playMedia(audio);
     }
 
     function playMedia(blob: Blob) {
@@ -134,20 +140,20 @@ export default defineComponent({
       // @ts-ignore
       fileReader.onload = () => ctx.decodeAudioData(fileReader.result)
           .then(buf => {
-
-            // const mp3 = audioBufferToMp3(buf);
-            // sendRecording(mp3);
-
-            const btn = document.getElementById("play-btn");
+            const playbtn = document.getElementById("play-btn");
             // @ts-ignore
-            btn.onclick = () => {
+            playbtn.onclick = () => {
               const source = ctx.createBufferSource();
               source.buffer = buf;
               source.connect(ctx.destination);
               source.start(0);
             };
             // @ts-ignore
-            btn.disabled = false;
+            playbtn.disabled = false;
+
+            const send_btn = document.getElementById("send-btn")
+            // @ts-ignore
+            send_btn.disabled = false;
           });
       fileReader.readAsArrayBuffer(blob);
     }
@@ -163,6 +169,7 @@ export default defineComponent({
 
       startRecord,
       stopRecord,
+      sendRecording,
     }
   }
 
