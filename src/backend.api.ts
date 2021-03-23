@@ -86,7 +86,16 @@ export default class APIWrapper {
             .catch(e => console.log(e));
     }
 
-    public static async sendAudioFile(file: any, body: any, config?: AxiosRequestConfig){
+    /**
+     * Sends an audio file to the microcontroller via the microcontroller/audiofile backend endpoint.
+     *
+     * @param file      AudioFile to be send. Either in webm, ogg or flac format.
+     * @param body      Containing the source_language of speech in audio, target_language, and mime type of the audio.
+     * @param config
+     */
+    public static async sendAudioFile(file: any, 
+                                      body: {source_language: string, target_language: string, mime: string},
+                                      config?: AxiosRequestConfig){
         const formData = new FormData();
 
         formData.append("file", file);
