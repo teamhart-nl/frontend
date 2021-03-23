@@ -98,13 +98,16 @@ export default class APIWrapper {
     public static async sendAudioFile(file: any,
                                       body: {source_language: string, target_language: string, type: string},
                                       config?: AxiosRequestConfig){
+        // Initialize multi-part form
         const formData = new FormData();
 
+        // Append data to form
         formData.append("file", file);
         formData.append('data', new Blob([JSON.stringify(body)], {
             type: "application/json"
         }));
 
+        // Send request to backend
         return backendApi.post("/api/v1/microcontroller/audiofile", formData)
             .then(handleApiResponse)
             .catch(e => console.log(e));
