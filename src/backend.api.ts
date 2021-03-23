@@ -91,7 +91,9 @@ export default class APIWrapper {
      *
      * @param file      AudioFile to be send. Either in webm, ogg or flac format.
      * @param body      Containing the source_language of speech in audio, target_language, and mime type of the audio.
-     * @param config
+     * @param config    (OPTIONAL) Axios config for configuring request
+     *
+     * See backend endpoint or more details.
      */
     public static async sendAudioFile(file: any,
                                       body: {source_language: string, target_language: string, type: string},
