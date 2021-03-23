@@ -93,8 +93,8 @@ export default class APIWrapper {
      * @param body      Containing the source_language of speech in audio, target_language, and mime type of the audio.
      * @param config
      */
-    public static async sendAudioFile(file: any, 
-                                      body: {source_language: string, target_language: string, mime: string},
+    public static async sendAudioFile(file: any,
+                                      body: {source_language: string, target_language: string, type: string},
                                       config?: AxiosRequestConfig){
         const formData = new FormData();
 
