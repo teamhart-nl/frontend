@@ -34,7 +34,6 @@ import APIWrapper from "@/backend.api";
 
 export default defineComponent({
   name: 'Audio',
-
   setup: async () => {
     let uploadedFile: any = undefined; // Stores the uploaded file
     const selectedLanguage1 = ref(); // Stores the selected language for file upload
@@ -223,8 +222,10 @@ export default defineComponent({
       stopRecord,
       sendRecording,
     }
+  },
+  created() {
+    document.title = "HART Prototype - Audio"
   }
-
 })
 </script>
 

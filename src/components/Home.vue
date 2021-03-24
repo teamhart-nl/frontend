@@ -17,6 +17,9 @@ export default defineComponent({
     return {
       home_message,
     }
+  },
+  created() {
+    document.title = "HART Prototype"
   }
 })
 </script>
