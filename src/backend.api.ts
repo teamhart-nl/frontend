@@ -9,16 +9,15 @@ const backendApi = Axios.create({
 })
 
 //method that check validity of 
-export const handleApiResponse = ((res: AxiosResponse) => {
+export const handleApiResponse = ((res: any) => {
     //unpack api result
     //if confusing: google ES6 destructuring assignment
+
     const {
         status: status,
         data: data,
         config: {method, url}
     } = res;
-
-    console.log(status, data)
 
 
     if (process.env.NODE_ENV === "development") {
@@ -35,19 +34,29 @@ export const handleApiResponse = ((res: AxiosResponse) => {
                     \nData: ${data}`);
 })
 
+export const handleApiErrorResponse = (res: any) => {
+    const {
+        data: data,
+        status: status,
+        statusText: statusText
+    } = res.response
+
+    console.log(statusText + " - " + status + ": " + data);
+}
+
 //the methods that wrap the api calls
 export default class APIWrapper {
 
     public static getWelcomeMessage(): any {
         return backendApi.get('/vue-test')
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     public static getPhonemes(): any {
         return backendApi.get('/api/v1/phonemes')
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -59,7 +68,7 @@ export default class APIWrapper {
     public static async sendPhonemeMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/phonemes', body, config)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -71,7 +80,7 @@ export default class APIWrapper {
     public static async sendWordsMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/words', body, config)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -83,7 +92,7 @@ export default class APIWrapper {
     public static async sendSentencesMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/sentences', body, config)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -110,6 +119,6 @@ export default class APIWrapper {
         // Send request to backend
         return backendApi.post("/api/v1/microcontroller/audiofile", formData)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 }
