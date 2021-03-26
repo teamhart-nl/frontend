@@ -1,5 +1,6 @@
 /*reset.css*/
-/* RESETS */
+/* Resets some of the vue.js standard layout stuff */
+
 *,
 *::before,
 *::after {

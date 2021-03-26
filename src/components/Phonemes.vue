@@ -77,7 +77,7 @@ export default defineComponent({
     const raRows = ref(0);
 
     /**
-     * Function for sending a phoneme from the dropdown menu
+     * Function for sending a phoneme from the dropdown menu.
      */
     function sendDropdownPhoneme() {
       // Check if something was selected

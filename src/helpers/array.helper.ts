@@ -10,7 +10,7 @@ export function getRandom(arr: [any], n: number): any {
         len = arr.length,
         taken = new Array(len);
     if (n > len)
-        throw new RangeError("getRandom: more elements taken than available");
+        throw new RangeError("array.helper.getRandom: more elements taken than available.");
     while (n--) {
         const x = Math.floor(Math.random() * len);
         result[n] = arr[x in taken ? taken[x] : x];

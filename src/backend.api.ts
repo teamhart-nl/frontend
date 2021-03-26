@@ -1,18 +1,19 @@
 import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {ApiURL} from "./resources";
 
-//api handler that is used by the components to do api calls.
 
-//apiURL is received from resources 
+// AxiosInstance using the ApiURL from resources.
 const backendApi = Axios.create({
     baseURL: ApiURL
 })
 
-//method that check validity of 
-export const handleApiResponse = ((res: any) => {
-    //unpack api result
-    //if confusing: google ES6 destructuring assignment
 
+/**
+ * Function for handling correctly returning API responses.
+ */
+export const handleApiResponse = ((res: AxiosResponse) => {
+
+    // Unpack API result
     const {
         status: status,
         data: data,
@@ -20,21 +21,21 @@ export const handleApiResponse = ((res: any) => {
     } = res;
 
 
+    // Log if in dev mode
     if (process.env.NODE_ENV === "development") {
         console.log(`${method} ${url}`)
         console.log(res)
     }
 
-    //return data from call
-    if (status === 200 && data !== undefined)
-        return data;
-    else
-        throw Error(`something went wrong with api call to ${method} : ${url}. 
-                    \nStatus: ${status}
-                    \nData: ${data}`);
+    // return data from call
+    return data
 })
 
+/**
+ * Function for handling API responses containing an error.
+ */
 export const handleApiErrorResponse = (res: any) => {
+    // Unpack API result
     const {
         data: data,
         status: status,
@@ -44,15 +45,14 @@ export const handleApiErrorResponse = (res: any) => {
     console.log(statusText + " - " + status + ": " + data);
 }
 
-//the methods that wrap the api calls
+/**
+ * Wrapper for communicating with teh backend.
+ */
 export default class APIWrapper {
 
-    public static getWelcomeMessage(): any {
-        return backendApi.get('/vue-test')
-            .then(handleApiResponse)
-            .catch(handleApiErrorResponse);
-    }
-
+    /**
+     * Gets the available phonemes from the backend.
+     */
     public static getPhonemes(): any {
         return backendApi.get('/api/v1/phonemes')
             .then(handleApiResponse)
@@ -100,7 +100,7 @@ export default class APIWrapper {
      *
      * @param file      AudioFile to be send. Either in webm, ogg or flac format.
      * @param body      Containing the source_language of speech in audio, target_language, and mime type of the audio.
-     * @param config    (OPTIONAL) Axios config for configuring request
+     * @param config    (OPTIONAL) Axios config for configuring request.
      *
      * See backend endpoint or more details.
      */
