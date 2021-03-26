@@ -1,10 +1,12 @@
 <template>
   <TabMenu :model="items" />
+  <Button @click="darkThemeSwitch"></Button>
 </template>
 
 <script lang="ts">
 
 import {defineComponent} from "vue";
+import {ThemeChanger} from "@/helpers/darkmode.helper";
 
 export default defineComponent({
   name: 'Navbar',
@@ -18,8 +20,18 @@ export default defineComponent({
       {label: 'Settings', icon: 'pi pi-fw pi-cog', to: '/settings'}
     ];
 
-    return {items}
-  }
+    const themeChanger = new ThemeChanger();
+
+    return {
+      items,
+      themeChanger
+    }
+  },
+  methods: {
+    darkThemeSwitch() {
+      this.themeChanger.darkThemeSwitch();
+    }
+  },
 })
 </script>
 

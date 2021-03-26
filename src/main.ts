@@ -6,8 +6,9 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import Button from "primevue/button";
 
-import 'primevue/resources/themes/md-light-indigo/theme.css';
-// import './assets/layout/theme.css';
+import './assets/layout/md-dark-indigo.css'
+import './assets/layout/md-light-indigo.css'
+
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
@@ -23,7 +24,7 @@ import AutoComplete from "primevue/autocomplete";
 import './assets/layout/reset.css';
 import './assets/layout/style.css';
 
-const app = createApp(App)
+const app = createApp(App);
 
 app.use(PrimeVue, {ripple: true});
 app.use(router);

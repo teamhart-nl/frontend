@@ -14,7 +14,9 @@
     "sourceMap": true,
     "baseUrl": "./",
     "types": [
-      "webpack-env"
+      "jquery",
+      "node",
+      "webpack-env",
     ],
     "paths": {
       "@/*": [
