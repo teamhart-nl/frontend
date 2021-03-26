@@ -6,8 +6,8 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import Button from "primevue/button";
 
-import './assets/layout/md-dark-indigo.css'
-import './assets/layout/md-light-indigo.css'
+import 'primevue/resources/themes/mdc-dark-deeppurple/theme.css'
+import 'primevue/resources/themes/mdc-light-deeppurple/theme.css';
 
 import './assets/layout/dark-mode.css'
 import './assets/layout/light-mode.css'
