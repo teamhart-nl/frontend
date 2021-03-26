@@ -9,6 +9,9 @@ import Button from "primevue/button";
 import './assets/layout/md-dark-indigo.css'
 import './assets/layout/md-light-indigo.css'
 
+import './assets/layout/dark-mode.css'
+import './assets/layout/light-mode.css'
+
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
