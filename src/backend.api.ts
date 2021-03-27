@@ -1,53 +1,62 @@
 import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {ApiURL} from "./resources";
 
-//api handler that is used by the components to do api calls.
 
-//apiURL is received from resources 
+// AxiosInstance using the ApiURL from resources.
 const backendApi = Axios.create({
     baseURL: ApiURL
 })
 
-//method that check validity of 
+
+/**
+ * Function for handling correctly returning API responses.
+ */
 export const handleApiResponse = ((res: AxiosResponse) => {
-    //unpack api result
-    //if confusing: google ES6 destructuring assignment
+
+    // Unpack API result
     const {
         status: status,
         data: data,
         config: {method, url}
     } = res;
 
-    console.log(status, data)
 
-
+    // Log if in dev mode
     if (process.env.NODE_ENV === "development") {
         console.log(`${method} ${url}`)
         console.log(res)
     }
 
-    //return data from call
-    if (status === 200 && data !== undefined)
-        return data;
-    else
-        throw Error(`something went wrong with api call to ${method} : ${url}. 
-                    \nStatus: ${status}
-                    \nData: ${data}`);
+    // return data from call
+    return data
 })
 
-//the methods that wrap the api calls
+/**
+ * Function for handling API responses containing an error.
+ */
+export const handleApiErrorResponse = (res: any) => {
+    // Unpack API result
+    const {
+        data: data,
+        status: status,
+        statusText: statusText
+    } = res.response
+
+    console.log(statusText + " - " + status + ": " + data);
+}
+
+/**
+ * Wrapper for communicating with teh backend.
+ */
 export default class APIWrapper {
 
-    public static getWelcomeMessage(): any {
-        return backendApi.get('/vue-test')
-            .then(handleApiResponse)
-            .catch(e => console.log(e));
-    }
-
+    /**
+     * Gets the available phonemes from the backend.
+     */
     public static getPhonemes(): any {
         return backendApi.get('/api/v1/phonemes')
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -59,7 +68,7 @@ export default class APIWrapper {
     public static async sendPhonemeMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/phonemes', body, config)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -71,7 +80,7 @@ export default class APIWrapper {
     public static async sendWordsMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/words', body, config)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -83,7 +92,7 @@ export default class APIWrapper {
     public static async sendSentencesMicrocontroller(body: any, config?: AxiosRequestConfig) {
         return backendApi.post('/api/v1/microcontroller/sentences', body, config)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 
     /**
@@ -91,7 +100,7 @@ export default class APIWrapper {
      *
      * @param file      AudioFile to be send. Either in webm, ogg or flac format.
      * @param body      Containing the source_language of speech in audio, target_language, and mime type of the audio.
-     * @param config    (OPTIONAL) Axios config for configuring request
+     * @param config    (OPTIONAL) Axios config for configuring request.
      *
      * See backend endpoint or more details.
      */
@@ -110,6 +119,6 @@ export default class APIWrapper {
         // Send request to backend
         return backendApi.post("/api/v1/microcontroller/audiofile", formData)
             .then(handleApiResponse)
-            .catch(e => console.log(e));
+            .catch(handleApiErrorResponse);
     }
 }
